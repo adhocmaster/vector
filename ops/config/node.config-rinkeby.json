@@ -1,0 +1,10 @@
+{
+  "adminToken": "cxt1234",
+  "chainProviders": {
+    "4": "https://eth-rinkeby.alchemyapi.io/v2/bNuDkDqm2ni5opAugE1-JQm2B-EJnza-" 
+  },
+  "logLevel": "info",
+  "messagingUrl": "",
+  "production": false,
+  "mnemonic": "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat"
+}
