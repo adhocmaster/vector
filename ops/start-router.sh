@@ -353,6 +353,14 @@ then
 fi
 
 # debug_node="prisma:client"
+host_gateway="
+    extra_hosts:
+      - host.docker.internal:host-gateway"
+
+if [ "$production" == "true" ] 
+then
+  host_gateway=""
+fi
 
 docker_compose=$root/.$stack.docker-compose.yml
 rm -f "$docker_compose"
@@ -389,6 +397,7 @@ services:
       VECTOR_PG_PASSWORD_FILE: '$pg_password_file'
       VECTOR_PG_PORT: '5432'
       VECTOR_PG_USERNAME: '$pg_user'
+      
 
   router:
     $common
@@ -406,6 +415,7 @@ services:
       VECTOR_PG_USERNAME: '$pg_user'
       VECTOR_MNEMONIC: '$eth_mnemonic'
       VECTOR_MNEMONIC_FILE: '$eth_mnemonic_file'
+    $host_gateway
 
   database-node:
     $common
