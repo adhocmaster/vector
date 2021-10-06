@@ -39,6 +39,8 @@ import { wallet } from "./metrics";
 import { ServerError } from "./errors";
 import { startMetricsBroadcastTask } from "./services/globalMetrics";
 
+import {configRoutes} from './routes/config'
+
 const config = getConfig();
 
 const routerBase = config.routerUrl;
@@ -145,6 +147,11 @@ const server = fastify({
   disableRequestLogging: config.logLevel !== "debug",
   bodyLimit: 10485760,
 });
+
+
+// register routes
+server.register(require('fastify-formbody'))
+server.register(configRoutes);
 
 collectDefaultMetrics({ prefix: "router_" });
 
