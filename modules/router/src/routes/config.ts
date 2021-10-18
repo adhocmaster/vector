@@ -29,8 +29,7 @@ async function routes(instance: FastifyInstance, options: any, done: CallableFun
 
         request.log.info( JSON.stringify(request.body) ); // we don't need fast json here.
         const body = request.body as MnemonicSchema;
-        const mnemonic = body.mnemonic;
-        request.mnemonic = mnemonic;
+        request.mnemonic = body.mnemonic;
         // request.log.info(`mnemonic received: ${mnemonic}`);
         // instance.decorate('mnemonic', mnemonic);
         // request.log.info(`closing mnemonic server.`);
