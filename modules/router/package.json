@@ -37,7 +37,6 @@
     "core-js": "3.9.1",
     "evt": "1.9.12",
     "fastify": "3.13.0",
-    "fastify-formbody": "^5.1.0",
     "fastify-metrics": "7.0.0",
     "fastify-oas": "3.0.8",
     "p-queue": "6.6.2",
