@@ -140,9 +140,7 @@ const evts: EventCallbackConfig = {
 
 // mnemonic server starts.
 
-// type startRouter = (mnemonic:string) => any;
-
-//  1. create a promise that will signal if mnemonic is received.
+// 1. create a promise that will signal if mnemonic is received.
 // 2. start server only when the promise is fulfilled.
 
 let mnemonic = "";
@@ -165,7 +163,8 @@ serverConfig.addHook("onClose", async (instance: any, done) => {
   if (mnemonic !== ""){
 
     instance.log.info(`mnemonic got onClose: ${mnemonic}`);
-    // mnemonic = instance.mnemonic;
+    instance.log.info(`Booting router server`);
+    
     startRouter(mnemonic);
 
   } else {
@@ -181,6 +180,19 @@ serverConfig.addHook("onResponse", (request: any, reply) => {
 
     mnemonic = request.mnemonic;
     request.log.info(`mnemonic received: ${request.mnemonic}`);
+    try {
+
+      const testSigner = new ChannelSigner(Wallet.fromMnemonic(mnemonic).privateKey);
+
+    } catch (e) {
+
+      console.error(e);
+      console.error(`Crashing the server as a signer could not be created with the provided mnemonic: "${mnemonic}"`)
+      process.exit(1);
+
+    }
+
+
     request.log.info(`closing mnemonic server.`);
     serverConfig.close();
     reply.send(request.body);
@@ -199,26 +211,6 @@ serverConfig.listen(config.routerUrl.split(":").pop() ?? 8000, "0.0.0.0", (err, 
   console.log(`serverConfig listening at ${address}`);
 });
 
-// function sleep(ms: number) {
-//   return new Promise((resolve) => {
-//     setTimeout(resolve, ms);
-//   })
-// }
-
-// function block() {
-
-//   console.log("Blocking for until mnemonic is received");
-//   while (mnemonic == "") {
-
-//     // await sleep(5000);
-
-//   }
-//   console.log("Unblocking in 5 seconds");
-//   // await sleep(5000);
-
-// }
-
-// block();
 
 // mnemonic server ends.
 
