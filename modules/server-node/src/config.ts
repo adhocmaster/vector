@@ -4,7 +4,6 @@ import { Type } from "@sinclair/typebox";
 import { readFileSync } from "fs";
 import Ajv from "ajv";
 
-import { logger } from "./index";
 
 const ajv = new Ajv();
 

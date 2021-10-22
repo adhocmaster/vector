@@ -2,6 +2,12 @@ import "core-js/stable";
 import "regenerator-runtime/runtime";
 import "reflect-metadata";
 
+
+import { container } from "tsyringe";
+import { registerInstances } from "./helpers/injection";
+
+registerInstances(); // must come before any import who would be using DI
+
 import fastify from "fastify";
 import fastifyCors from "fastify-cors";
 import pino from "pino";
@@ -36,11 +42,7 @@ import {
   submitUnsubmittedWithdrawals,
 } from "./services/withdrawal";
 
-import { container } from "tsyringe";
-import { registerInstances } from "./helpers/injection";
 import { Logger } from "pino";
-
-registerInstances();
 const config = container.resolve<any>("config");
 const logger = container.resolve<Logger>("logger"); // export
 const store = container.resolve<PrismaStore>("store"); // export
