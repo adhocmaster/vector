@@ -10,7 +10,9 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "strict": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["src/*.ts", "src/**/*.ts"],
 }

@@ -32,7 +32,9 @@
     "prisma": "2.22.0",
     "regenerator-runtime": "0.13.7",
     "sqlite3": "5.0.2",
-    "ts-nats": "1.2.15"
+    "ts-nats": "1.2.15",
+    "reflect-metadata": "0.1.13",
+    "tsyringe": "4.6.0"
   },
   "devDependencies": {
     "@types/chai": "4.2.15",

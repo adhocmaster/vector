@@ -1,5 +1,7 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
+import "reflect-metadata";
+
 import fastify from "fastify";
 import fastifyCors from "fastify-cors";
 import pino from "pino";
@@ -23,7 +25,8 @@ import { Static, Type } from "@sinclair/typebox";
 import { Wallet } from "@ethersproject/wallet";
 
 import { PrismaStore } from "./services/store";
-import { config } from "./config";
+// import { config } from "./config";
+
 import { createNode, deleteNodes, getChainService, getNode, getNodes } from "./helpers/nodes";
 import { ServerNodeError } from "./helpers/errors";
 import {
@@ -32,7 +35,13 @@ import {
   submitUnsubmittedWithdrawals,
 } from "./services/withdrawal";
 
-console.log("Console log working")
+import {container} from "tsyringe";
+import {registerInstances} from "./helpers/injection";
+
+registerInstances();
+const config = container.resolve<any>("config");
+
+
 const configuredIdentifier = getPublicIdentifierFromPublicKey(Wallet.fromMnemonic(config.mnemonic).publicKey);
 export const logger = pino({ name: configuredIdentifier, level: config.logLevel ?? "info" });
 logger.info("Loaded config from environment", { ...config, mnemonic: "", adminToken: "" });
