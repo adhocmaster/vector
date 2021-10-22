@@ -11,11 +11,17 @@ import {
 import { getRandomBytes32, mkSig } from "@connext/vector-utils";
 import { HashZero, AddressZero } from "@ethersproject/constants";
 
-import { logger } from "..";
+// import { logger } from "..";
 import { ResubmitWithdrawalError } from "../helpers/errors";
 import { getChainService, getNodes } from "../helpers/nodes";
 
 import { PrismaStore } from "./store";
+
+
+import { container } from "tsyringe";
+import { Logger } from "pino";
+
+const logger = container.resolve<Logger>("logger"); 
 
 export type ResubmitWithdrawalResult = {
   transactionHash: string;
