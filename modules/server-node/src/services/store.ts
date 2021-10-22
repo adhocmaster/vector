@@ -41,11 +41,11 @@ import {
   PrismaPromise,
 } from "../generated/db-client";
 
-import { container } from "tsyringe";
+import { injectable, inject } from "tsyringe";
 import { Logger } from "pino";
 
-const config = container.resolve<any>("config");
-const logger = container.resolve<Logger>("logger"); 
+// const config = container.resolve<any>("config");
+// const logger = container.resolve<Logger>("logger"); 
 
 const convertOnchainTransactionEntityToTransaction = (
   onchainEntity: OnchainTransaction & {
@@ -318,10 +318,16 @@ const convertEntityToTransferDispute = (entity: TransferDisputeEntity): Transfer
     transferStateHash: entity.transferStateHash,
   };
 };
+
+@injectable()
 export class PrismaStore implements IServerNodeStore {
   public prisma: PrismaClient;
 
-  constructor(private readonly dbUrl?: string) {
+  constructor(
+    @inject("logger") logger: Logger,
+    @inject("config") config: any,
+    @inject("dbUrl") private readonly dbUrl?: string
+    ) {
     const _dbUrl = this.dbUrl
       ? this.dbUrl
       : config.dbUrl?.startsWith("sqlite")

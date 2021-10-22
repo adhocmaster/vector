@@ -11,12 +11,14 @@ import { HydratedProviders } from "@connext/vector-types";
 
 
 export function registerInstances() {
+
+    container.register<string>("dbUrl", {useValue: ""}); // PrismaStore uses this parameter.
     registerConfig();
     registerLogger();
     const config = container.resolve<any>("config");
     const logger = container.resolve<Logger>("logger");
 
-    registerPrisma(logger);
+    registerPrisma(logger, config);
     registerHydratedProviders(logger, config);
 
     
@@ -35,10 +37,11 @@ function registerLogger() {
 }
 
 
-function registerPrisma(logger: Logger) {
+function registerPrisma(logger: Logger, config: any) {
 
     logger.info("Creating PrismaStore");
-    const store = new PrismaStore();
+    // const store = new PrismaStore();
+    const store = container.resolve<PrismaStore>(PrismaStore);
     container.registerInstance<PrismaStore>("store", store);
 
 }
