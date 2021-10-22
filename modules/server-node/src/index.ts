@@ -19,6 +19,7 @@ import {
   GetTransfersFilterOpts,
   GetTransfersFilterOptsSchema,
   VectorErrorJson,
+  HydratedProviders,
 } from "@connext/vector-types";
 import { constructRpcRequest, getPublicIdentifierFromPublicKey, hydrateProviders } from "@connext/vector-utils";
 import { Static, Type } from "@sinclair/typebox";
@@ -35,15 +36,16 @@ import {
   submitUnsubmittedWithdrawals,
 } from "./services/withdrawal";
 
-import {container} from "tsyringe";
-import {registerInstances} from "./helpers/injection";
+import { container } from "tsyringe";
+import { registerInstances } from "./helpers/injection";
+import { Logger } from "pino";
 
 registerInstances();
 const config = container.resolve<any>("config");
+const logger = container.resolve<Logger>("logger"); // export
+const store = container.resolve<PrismaStore>("store"); // export
+const _providers = container.resolve<HydratedProviders>("hydrated_chain_providers"); // export
 
-
-const configuredIdentifier = getPublicIdentifierFromPublicKey(Wallet.fromMnemonic(config.mnemonic).publicKey);
-export const logger = pino({ name: configuredIdentifier, level: config.logLevel ?? "info" });
 logger.info("Loaded config from environment", { ...config, mnemonic: "", adminToken: "" });
 
 logger.info(config)
@@ -60,12 +62,12 @@ server.register(fastifyCors, {
   preflightContinue: true,
 });
 
-logger.info("Creating PrismaStore");
-export const store = new PrismaStore();
+// logger.info("Creating PrismaStore");
+// export const store = new PrismaStore();
 
-logger.info("hydrateProviders");
+// logger.info("hydrateProviders");
 
-export const _providers = hydrateProviders(config.chainProviders);
+// export const _providers = hydrateProviders(config.chainProviders);
 
 server.addHook("onReady", async () => {
   const persistedNodes = await store.getNodeIndexes();

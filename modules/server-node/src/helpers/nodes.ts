@@ -1,12 +1,18 @@
 import { VectorChainService } from "@connext/vector-contracts";
 import { VectorEngine } from "@connext/vector-engine";
-import { EngineEvents, IVectorChainService, IVectorEngine, IServerNodeStore } from "@connext/vector-types";
+import { EngineEvents, IVectorChainService, IVectorEngine, IServerNodeStore, HydratedProviders } from "@connext/vector-types";
 import { ChannelSigner, NatsMessagingService, logAxiosError } from "@connext/vector-utils";
 import Axios from "axios";
 import { Wallet } from "@ethersproject/wallet";
 
-import { logger, _providers } from "../index";
-import { config } from "../config";
+import { container } from "tsyringe";
+import { Logger } from "pino";
+
+// import { logger, _providers } from "../index";
+// import { config } from "../config";
+const config = container.resolve<any>("config");
+const logger = container.resolve<Logger>("logger"); // export
+const _providers = container.resolve<HydratedProviders>("hydrated_chain_providers"); // export
 
 const ETH_STANDARD_PATH = "m/44'/60'/0'/0";
 
