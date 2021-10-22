@@ -23,9 +23,9 @@ import {
 import { getRandomBytes32, getSignerAddressFromPublicIdentifier, mkSig } from "@connext/vector-utils";
 import { BigNumber } from "@ethersproject/bignumber";
 import { TransactionResponse, TransactionReceipt } from "@ethersproject/providers";
-import { logger } from "..";
+// import { logger } from "..";
 
-import { config } from "../config";
+// import { config } from "../config";
 import {
   Prisma,
   Channel,
@@ -40,6 +40,12 @@ import {
   OnchainTransactionAttempt,
   PrismaPromise,
 } from "../generated/db-client";
+
+import { container } from "tsyringe";
+import { Logger } from "pino";
+
+const config = container.resolve<any>("config");
+const logger = container.resolve<Logger>("logger"); 
 
 const convertOnchainTransactionEntityToTransaction = (
   onchainEntity: OnchainTransaction & {
